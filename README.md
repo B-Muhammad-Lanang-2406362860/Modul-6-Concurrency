@@ -1,0 +1,5 @@
+
+## Reflection for Milestone 1
+In this first milestone, I implemented handle_connection function to process incoming TCP streams from the client. Instead of dealing with raw bytes directly, the code wraps the mut TcpStream in a BufReader. This is a crucial step because it provides buffered reading capabilities, making it easier and more efficient to parse the incoming data stream line by line. I learned that a standard HTTP request is just a block of formatted text sent by the browser, which terminates its header section with a single empty line.
+
+To capture and process this, the code utilizes Rust's functional iterator patterns. It calls .lines() on the BufReader to yield a sequence of Result strings, uses .map() to unwrap them, and applies .take_while(|line| !line.is_empty()) to continuously read until it encounters that HTTP-standard blank line. Finally, .collect() gathers all these parsed lines into a Vec<String>, allowing the server to cleanly print and inspect the exact HTTP request headers. Building this manually exposes me to the underlying concept of how web servers and browsers actually communicate, rather than using high-level frameworks.
